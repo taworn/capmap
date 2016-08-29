@@ -6,7 +6,20 @@
         xmlns:local="clr-namespace:capmap"
         mc:Ignorable="d"
         Title="Capman Map Editor" Height="480" Width="640">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" Click="menuFileNew"/>
+                <MenuItem Header="_Open..." Click="menuFileOpen"/>
+                <MenuItem Header="_Save" Click="menuFileSave"/>
+                <MenuItem Header="S_ave As..." Click="menuFileSaveAs"/>
+                <MenuItem Header="_Close" Click="menuFileClose"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="menuFileExit"/>
+            </MenuItem>
+        </Menu>
+
+        <UniformGrid Rows="16" Columns="16" Height="1024" Width="1024" x:Name="mapGrid">
+        </UniformGrid>
+    </DockPanel>
 </Window>
