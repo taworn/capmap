@@ -14,7 +14,29 @@ namespace capmap {
             InitializeComponent();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e) {
+            var children = mapGrid.Children;
+            children.Clear();
+            for (int i = 0; i < 256; i++) {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri("pack://application:,,,/capmap;component/res/block.png");
+                bitmap.EndInit();
+                var image = new Image();
+                image.Source = bitmap;
+                image.Margin = new Thickness(1, 1, 1, 1);
+                image.MouseDown += Image_MouseDown;
+                image.Tag = i;
+                children.Add(image);
+            }
+        }
+
+        private void Window_Closed(object sender, EventArgs e) {
+            //
+        }
+
         private void menuFileNew(object sender, RoutedEventArgs e) {
+            /*
             var children = mapGrid.Children;
             children.Clear();
             for (int i = 0; i < 256; i++) {
@@ -26,10 +48,11 @@ namespace capmap {
                 image.Source = bitmap;
                 children.Add(image);
             }
+            */
         }
 
         private void menuFileOpen(object sender, RoutedEventArgs e) {
-            OpenFileDialog dialog = new OpenFileDialog();
+            var dialog = new OpenFileDialog();
             dialog.CheckFileExists = true;
             dialog.CheckPathExists = true;
             dialog.DefaultExt = ".map";
@@ -46,7 +69,7 @@ namespace capmap {
         }
 
         private void menuFileSaveAs(object sender, RoutedEventArgs e) {
-            SaveFileDialog dialog = new SaveFileDialog();
+            var dialog = new SaveFileDialog();
             dialog.CheckPathExists = true;
             dialog.DefaultExt = ".map";
             dialog.FileName = "";
@@ -58,12 +81,19 @@ namespace capmap {
         }
 
         private void menuFileClose(object sender, RoutedEventArgs e) {
+            /*
             var children = mapGrid.Children;
             children.Clear();
+            */
         }
 
         private void menuFileExit(object sender, RoutedEventArgs e) {
             Close();
+        }
+
+        private void Image_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            var image = (Image)sender;
+            MessageBox.Show(this, "Tag is " + image.Tag, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
     }
