@@ -69,6 +69,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Map.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -103,6 +104,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="res\bread.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\movable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="res\divo.png" />
+    <Resource Include="res\pacman.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
