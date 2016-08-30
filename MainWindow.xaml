@@ -10,35 +10,35 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" Click="menuFileNew"/>
-                <MenuItem Header="_Open..." Click="menuFileOpen"/>
-                <MenuItem Header="_Save" Click="menuFileSave"/>
-                <MenuItem Header="S_ave As..." Click="menuFileSaveAs"/>
-                <MenuItem Header="_Export To JavaScript..." Click="menuFileExportToJavaScript"/>
-                <MenuItem Header="_Close" Click="menuFileClose"/>
+                <MenuItem Header="_New" Click="menuFileNew_Click"/>
+                <MenuItem Header="_Open..." Click="menuFileOpen_Click"/>
+                <MenuItem Header="_Save" x:Name="menuFileSave" Click="menuFileSave_Click"/>
+                <MenuItem Header="S_ave As..." x:Name="menuFileSaveAs" Click="menuFileSaveAs_Click"/>
+                <MenuItem Header="_Export To JavaScript..." x:Name="menuFileExportToJavaScript" Click="menuFileExportToJavaScript_Click"/>
+                <MenuItem Header="_Close" x:Name="menuFileClose" Click="menuFileClose_Click"/>
                 <Separator/>
-                <MenuItem Header="E_xit" Click="menuFileExit"/>
+                <MenuItem Header="E_xit" Click="menuFileExit_Click"/>
             </MenuItem>
         </Menu>
 
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
             <RadioButton Style="{StaticResource RadioButton}" ToolTip="Block" x:Name="radioBlock" Tag="1" Click="RadioButton_Click">
-                <Image Margin="4,4,4,4" Source="./res/block.png" x:Name="imageBlock"/>
+                <Image Margin="4,4,4,4" Source="./res/block.png" Tag="1" x:Name="imageBlock"/>
             </RadioButton>
             <RadioButton Style="{StaticResource RadioButton}" ToolTip="Movable" Tag="2" Click="RadioButton_Click">
-                <Image Margin="4,4,4,4" Source="./res/movable.png" x:Name="imageMovable"/>
+                <Image Margin="4,4,4,4" Source="./res/movable.png" Tag="2" x:Name="imageMovable"/>
             </RadioButton>
             <RadioButton Style="{StaticResource RadioButton}" ToolTip="Coke" Tag="3" Click="RadioButton_Click">
-                <Image Margin="4,4,4,4" Source="./res/coke.png" x:Name="imageCoke"/>
+                <Image Margin="4,4,4,4" Source="./res/coke.png" Tag="3" x:Name="imageCoke"/>
             </RadioButton>
             <RadioButton Style="{StaticResource RadioButton}" ToolTip="Bread" Tag="4" Click="RadioButton_Click">
-                <Image Margin="4,4,4,4" Source="./res/bread.png" x:Name="imageBread"/>
+                <Image Margin="4,4,4,4" Source="./res/bread.png" Tag="4" x:Name="imageBread"/>
             </RadioButton>
             <RadioButton Style="{StaticResource RadioButton}" ToolTip="Divo Start Point" Tag="5" Click="RadioButton_Click">
-                <Image Margin="4,4,4,4" Source="./res/divo.png" x:Name="imageDivo"/>
+                <Image Margin="4,4,4,4" Source="./res/divo.png" Tag="5" x:Name="imageDivo"/>
             </RadioButton>
             <RadioButton Style="{StaticResource RadioButton}" ToolTip="Pacman Start Point" Tag="6" Click="RadioButton_Click">
-                <Image Margin="4,4,4,4" Source="./res/pacman.png" x:Name="imagePacman"/>
+                <Image Margin="4,4,4,4" Source="./res/pacman.png" Tag="6" x:Name="imagePacman"/>
             </RadioButton>
         </StackPanel>
 
