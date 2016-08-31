@@ -9,8 +9,9 @@ namespace capmap {
         private int divoStartY;
         private int pacmanStartX;
         private int pacmanStartY;
-        private int[] blockMap;
-        private int[] imageMap;
+        private byte[] mapData;
+        private int[] imageData;
+        private int[] blockData;
 
         /// <summary>
         /// Constructs a map.
@@ -22,8 +23,12 @@ namespace capmap {
             divoStartY = -1;
             pacmanStartX = -1;
             pacmanStartY = -1;
-            blockMap = new int[width * height];
-            imageMap = new int[width * height];
+            mapData = new byte[width * height];
+            imageData = new int[width * height];
+            blockData = new int[width * height];
+
+            for (var i = 0; i < width * height; i++)
+                Set(i, 0);
         }
 
         /// <summary>
@@ -52,15 +57,20 @@ namespace capmap {
                 int dy = reader.ReadInt32();
                 int px = reader.ReadInt32();
                 int py = reader.ReadInt32();
-
-                // reads block map and image map data
                 int size = w * h;
-                int[] blockMap = new int[size];
-                int[] imageMap = new int[size];
+
+                // mapData and imageData are for game, not used map editor, just copying
+                byte[] mapData = new byte[size];
                 for (int i = 0; i < size; i++)
-                    blockMap[i] = reader.ReadInt32();
+                    mapData[i] = reader.ReadByte();
+                int[] imageData = new int[size];
                 for (int i = 0; i < size; i++)
-                    imageMap[i] = reader.ReadInt32();
+                    imageData[i] = reader.ReadInt32();
+
+                // reads block data
+                int[] blockData = new int[size];
+                for (int i = 0; i < size; i++)
+                    blockData[i] = reader.ReadInt32();
 
                 // copying data
                 this.width = w;
@@ -69,8 +79,9 @@ namespace capmap {
                 this.divoStartY = dy;
                 this.pacmanStartX = px;
                 this.pacmanStartY = py;
-                this.blockMap = blockMap;
-                this.imageMap = imageMap;
+                this.mapData = mapData;
+                this.imageData = imageData;
+                this.blockData = blockData;
             }
             finally {
                 reader.Close();
@@ -99,13 +110,17 @@ namespace capmap {
                 writer.Write(divoStartY);
                 writer.Write(pacmanStartX);
                 writer.Write(pacmanStartY);
-
-                // writes block map and image map data
                 int size = width * height;
+
+                // writes map data and image data for game
                 for (int i = 0; i < size; i++)
-                    writer.Write(blockMap[i]);
+                    writer.Write(mapData[i]);
                 for (int i = 0; i < size; i++)
-                    writer.Write(imageMap[i]);
+                    writer.Write(imageData[i]);
+
+                // writes block data
+                for (int i = 0; i < size; i++)
+                    writer.Write(blockData[i]);
             }
             finally {
                 writer.Close();
@@ -148,12 +163,43 @@ namespace capmap {
         }
 
         public int Get(int index) {
-            return blockMap[index];
+            return blockData[index];
         }
 
         public void Set(int index, int data) {
-            blockMap[index] = data;
-            imageMap[index] = data;
+            blockData[index] = data;
+
+            // translate block to map and image
+            if (data == 0) {
+                // blocking
+                mapData[index] = 0x01;
+                imageData[index] = 3;
+            }
+            else if (data == 1) {
+                // movable
+                mapData[index] = 0x00;
+                imageData[index] = 0;
+            }
+            else if (data == 2) {
+                // coke
+                mapData[index] = 0x10;
+                imageData[index] = 1;
+            }
+            else if (data == 3) {
+                // bread
+                mapData[index] = 0x10;
+                imageData[index] = 2;
+            }
+            else if (data == 4 || data == 5) {
+                // start point, just show movable
+                mapData[index] = 0x00;
+                imageData[index] = 0;
+            }
+            else {
+                // treat like blocking
+                mapData[index] = 0x01;
+                imageData[index] = 3;
+            }
         }
 
     }

@@ -1,8 +1,6 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 
 namespace capmap {
     /// <summary>
@@ -140,6 +138,45 @@ namespace capmap {
             Close();
         }
 
+        private void menuEditFillCoke_Click(object sender, RoutedEventArgs e) {
+            var children = mapGrid.Children;
+            var size = mapObject.GetWidth() * mapObject.GetHeight();
+            for (var i = 0; i < size; i++) {
+                if (mapObject.Get(i) == 1) { // is a movable
+                    mapObject.Set(i, 2); // replace with coke
+                    ((Image)children[i]).Source = imageCoke.Source;
+                }
+            }
+        }
+
+        private void menuEditFillBread_Click(object sender, RoutedEventArgs e) {
+            var children = mapGrid.Children;
+            var size = mapObject.GetWidth() * mapObject.GetHeight();
+            for (var i = 0; i < size; i++) {
+                if (mapObject.Get(i) == 1) { // is a movable
+                    mapObject.Set(i, 3); // replace with bread
+                    ((Image)children[i]).Source = imageBread.Source;
+                }
+            }
+        }
+
+        private void menuEditRemoveAllItems_Click(object sender, RoutedEventArgs e) {
+            var children = mapGrid.Children;
+            var size = mapObject.GetWidth() * mapObject.GetHeight();
+            for (var i = 0; i < size; i++) {
+                if (mapObject.Get(i) == 2 || mapObject.Get(i) == 3) { // is a coke or a bread
+                    mapObject.Set(i, 1); // replace with movable
+                    ((Image)children[i]).Source = imageMovable.Source;
+                }
+            }
+        }
+
+        private void menuHelpAbout_Click(object sender, RoutedEventArgs e) {
+            var dialog = new AboutWindow();
+            dialog.Owner = this;
+            dialog.ShowDialog();
+        }
+
         private void Image_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
             var image = (Image)sender;
             if (imageSource != null) {
@@ -260,39 +297,6 @@ namespace capmap {
 
         private void UpdateTitle() {
             Title = (mapChanged ? "* " : "") + (mapFileName != null ? mapFileName : "new map") + " - " + title;
-        }
-
-        private void menuEditFillCoke_Click(object sender, RoutedEventArgs e) {
-            var children = mapGrid.Children;
-            var size = mapObject.GetWidth() * mapObject.GetHeight();
-            for (var i = 0; i < size; i++) {
-                if (mapObject.Get(i) == 1) { // is a movable
-                    mapObject.Set(i, 2); // replace with coke
-                    ((Image)children[i]).Source = imageCoke.Source;
-                }
-            }
-        }
-
-        private void menuEditFillBread_Click(object sender, RoutedEventArgs e) {
-            var children = mapGrid.Children;
-            var size = mapObject.GetWidth() * mapObject.GetHeight();
-            for (var i = 0; i < size; i++) {
-                if (mapObject.Get(i) == 1) { // is a movable
-                    mapObject.Set(i, 3); // replace with bread
-                    ((Image)children[i]).Source = imageBread.Source;
-                }
-            }
-        }
-
-        private void menuEditRemoveAllItems_Click(object sender, RoutedEventArgs e) {
-            var children = mapGrid.Children;
-            var size = mapObject.GetWidth() * mapObject.GetHeight();
-            for (var i = 0; i < size; i++) {
-                if (mapObject.Get(i) == 2 || mapObject.Get(i) == 3) { // is a coke or a bread
-                    mapObject.Set(i, 1); // replace with movable
-                    ((Image)children[i]).Source = imageMovable.Source;
-                }
-            }
         }
 
     }
