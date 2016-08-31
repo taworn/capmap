@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:capmap"
         mc:Ignorable="d"
-        Loaded="Window_Loaded" Closed="Window_Closed"
+        Loaded="Window_Loaded" Closing="Window_Closing"
         Title="Capman Map Editor" Height="768" Width="1024">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -22,23 +22,23 @@
         </Menu>
 
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-            <RadioButton Style="{StaticResource RadioButton}" ToolTip="Block" x:Name="radioBlock" Tag="1" Click="RadioButton_Click">
-                <Image Margin="4,4,4,4" Source="./res/block.png" Tag="1" x:Name="imageBlock"/>
+            <RadioButton Style="{StaticResource RadioButton}" ToolTip="Block" x:Name="radioBlock" Tag="0" Click="RadioButton_Click">
+                <Image Margin="4,4,4,4" Source="./res/block.png" Tag="0" x:Name="imageBlock"/>
             </RadioButton>
-            <RadioButton Style="{StaticResource RadioButton}" ToolTip="Movable" Tag="2" Click="RadioButton_Click">
-                <Image Margin="4,4,4,4" Source="./res/movable.png" Tag="2" x:Name="imageMovable"/>
+            <RadioButton Style="{StaticResource RadioButton}" ToolTip="Movable" Tag="1" Click="RadioButton_Click">
+                <Image Margin="4,4,4,4" Source="./res/movable.png" Tag="1" x:Name="imageMovable"/>
             </RadioButton>
-            <RadioButton Style="{StaticResource RadioButton}" ToolTip="Coke" Tag="3" Click="RadioButton_Click">
-                <Image Margin="4,4,4,4" Source="./res/coke.png" Tag="3" x:Name="imageCoke"/>
+            <RadioButton Style="{StaticResource RadioButton}" ToolTip="Coke" Tag="2" Click="RadioButton_Click">
+                <Image Margin="4,4,4,4" Source="./res/coke.png" Tag="2" x:Name="imageCoke"/>
             </RadioButton>
-            <RadioButton Style="{StaticResource RadioButton}" ToolTip="Bread" Tag="4" Click="RadioButton_Click">
-                <Image Margin="4,4,4,4" Source="./res/bread.png" Tag="4" x:Name="imageBread"/>
+            <RadioButton Style="{StaticResource RadioButton}" ToolTip="Bread" Tag="3" Click="RadioButton_Click">
+                <Image Margin="4,4,4,4" Source="./res/bread.png" Tag="3" x:Name="imageBread"/>
             </RadioButton>
-            <RadioButton Style="{StaticResource RadioButton}" ToolTip="Divo Start Point" Tag="5" Click="RadioButton_Click">
-                <Image Margin="4,4,4,4" Source="./res/divo.png" Tag="5" x:Name="imageDivo"/>
+            <RadioButton Style="{StaticResource RadioButton}" ToolTip="Divo Start Point" Tag="4" Click="RadioButton_Click">
+                <Image Margin="4,4,4,4" Source="./res/divo.png" Tag="4" x:Name="imageDivo"/>
             </RadioButton>
-            <RadioButton Style="{StaticResource RadioButton}" ToolTip="Pacman Start Point" Tag="6" Click="RadioButton_Click">
-                <Image Margin="4,4,4,4" Source="./res/pacman.png" Tag="6" x:Name="imagePacman"/>
+            <RadioButton Style="{StaticResource RadioButton}" ToolTip="Pacman Start Point" Tag="5" Click="RadioButton_Click">
+                <Image Margin="4,4,4,4" Source="./res/pacman.png" Tag="5" x:Name="imagePacman"/>
             </RadioButton>
         </StackPanel>
 

@@ -46,7 +46,7 @@ namespace capmap {
                 int ph = reader.ReadInt32();
 
                 // reads block map and image map data
-                int size = width * height;
+                int size = w * h;
                 int[] blockMap = new int[size];
                 int[] imageMap = new int[size];
                 for (int i = 0; i < size; i++)
