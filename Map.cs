@@ -5,6 +5,10 @@ namespace capmap {
 
         private int width;
         private int height;
+        private int divoStartX;
+        private int divoStartY;
+        private int pacmanStartX;
+        private int pacmanStartY;
         private int[] blockMap;
         private int[] imageMap;
 
@@ -14,6 +18,10 @@ namespace capmap {
         public Map(int w, int h) {
             width = w;
             height = h;
+            divoStartX = -1;
+            divoStartY = -1;
+            pacmanStartX = -1;
+            pacmanStartY = -1;
             blockMap = new int[width * height];
             imageMap = new int[width * height];
         }
@@ -39,11 +47,11 @@ namespace capmap {
                 int w = reader.ReadInt32();
                 int h = reader.ReadInt32();
                 if (w != 16 && h != 16)
-                    throw new IOException("Width and Height must be 16 for now.");
-                int dw = reader.ReadInt32();
-                int dh = reader.ReadInt32();
-                int pw = reader.ReadInt32();
-                int ph = reader.ReadInt32();
+                    throw new IOException("Width and Height must be 16x16 for now.");
+                int dx = reader.ReadInt32();
+                int dy = reader.ReadInt32();
+                int px = reader.ReadInt32();
+                int py = reader.ReadInt32();
 
                 // reads block map and image map data
                 int size = w * h;
@@ -57,10 +65,10 @@ namespace capmap {
                 // copying data
                 this.width = w;
                 this.height = h;
-                //this. = dw;
-                //this. = dh;
-                //this. = pw;
-                //this. = ph;
+                this.divoStartX = dx;
+                this.divoStartY = dy;
+                this.pacmanStartX = px;
+                this.pacmanStartY = py;
                 this.blockMap = blockMap;
                 this.imageMap = imageMap;
             }
@@ -87,10 +95,10 @@ namespace capmap {
                 // 6 int = width, height, divo start width, divo start height, pacman start width, pacman start height
                 writer.Write(width);
                 writer.Write(height);
-                writer.Write(0);
-                writer.Write(0);
-                writer.Write(0);
-                writer.Write(0);
+                writer.Write(divoStartX);
+                writer.Write(divoStartY);
+                writer.Write(pacmanStartX);
+                writer.Write(pacmanStartY);
 
                 // writes block map and image map data
                 int size = width * height;
@@ -111,6 +119,32 @@ namespace capmap {
 
         public int GetHeight() {
             return height;
+        }
+
+        public int GetDivoStartX() {
+            return divoStartX;
+        }
+
+        public int GetDivoStartY() {
+            return divoStartY;
+        }
+
+        public void SetDivoStart(int x, int y) {
+            divoStartX = x;
+            divoStartY = y;
+        }
+
+        public int GetPacmanStartX() {
+            return pacmanStartX;
+        }
+
+        public int GetPacmanStartY() {
+            return pacmanStartY;
+        }
+
+        public void SetPacmanStart(int x, int y) {
+            pacmanStartX = x;
+            pacmanStartY = y;
         }
 
         public int Get(int index) {

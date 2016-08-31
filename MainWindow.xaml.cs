@@ -44,7 +44,8 @@ namespace capmap {
             mapFileName = null;
             var children = mapGrid.Children;
             children.Clear();
-            for (int i = 0; i < 256; i++) {
+            var size = mapObject.GetWidth() * mapObject.GetHeight();
+            for (var i = 0; i < size; i++) {
                 var image = new Image();
                 image.Source = imageBlock.Source;
                 image.Margin = new Thickness(1, 1, 1, 1);
@@ -76,7 +77,8 @@ namespace capmap {
                 mapFileName = dialog.FileName;
                 var children = mapGrid.Children;
                 children.Clear();
-                for (int i = 0; i < 256; i++) {
+                var size = mapObject.GetWidth() * mapObject.GetHeight();
+                for (var i = 0; i < size; i++) {
                     var image = new Image();
                     image.Source = MapDataToImage(mapObject.Get(i)).Source;
                     image.Margin = new Thickness(1, 1, 1, 1);
@@ -143,8 +145,48 @@ namespace capmap {
             if (imageSource != null) {
                 int imageTag = int.Parse(image.Tag.ToString());
                 int imageSourceTag = int.Parse(imageSource.Tag.ToString());
-                mapObject.Set(imageTag, imageSourceTag);
-                image.Source = imageSource.Source;
+
+                if (mapObject.Get(imageTag) != imageSourceTag) {
+                    if (mapObject.Get(imageTag) == 4) {
+                        var x = -1;
+                        var y = -1;
+                        mapObject.SetDivoStart(x, y);
+                    }
+                    if (mapObject.Get(imageTag) == 5) {
+                        var x = -1;
+                        var y = -1;
+                        mapObject.SetPacmanStart(x, y);
+                    }
+
+                    mapObject.Set(imageTag, imageSourceTag);
+                    image.Source = imageSource.Source;
+
+                    if (imageSourceTag == 4) {
+                        // only one Divo start point
+                        var x = mapObject.GetDivoStartX();
+                        var y = mapObject.GetDivoStartY();
+                        if (x >= 0 && y >= 0) {
+                            mapObject.Set(y * mapObject.GetWidth() + x, 1);
+                            ((Image)mapGrid.Children[y * mapObject.GetWidth() + x]).Source = imageMovable.Source;
+                        }
+                        x = imageTag % mapObject.GetWidth();
+                        y = imageTag / mapObject.GetWidth();
+                        mapObject.SetDivoStart(x, y);
+                    }
+                    if (imageSourceTag == 5) {
+                        // only one Pacman start point
+                        var x = mapObject.GetPacmanStartX();
+                        var y = mapObject.GetPacmanStartY();
+                        if (x >= 0 && y >= 0) {
+                            mapObject.Set(y * mapObject.GetWidth() + x, 1);
+                            ((Image)mapGrid.Children[y * mapObject.GetWidth() + x]).Source = imageMovable.Source;
+                        }
+                        x = imageTag % mapObject.GetWidth();
+                        y = imageTag / mapObject.GetWidth();
+                        mapObject.SetPacmanStart(x, y);
+                    }
+                }
+
                 if (!mapChanged) {
                     mapChanged = true;
                     UpdateTitle();
@@ -170,11 +212,9 @@ namespace capmap {
                 }
                 else if (tag == "4") {
                     imageSource = imageDivo;
-                    //
                 }
                 else if (tag == "5") {
                     imageSource = imagePacman;
-                    //
                 }
                 else {
                     imageSource = imageBlock;
@@ -213,10 +253,46 @@ namespace capmap {
             menuFileSaveAs.IsEnabled = enabled;
             menuFileExportToJavaScript.IsEnabled = enabled;
             menuFileClose.IsEnabled = enabled;
+            menuEditFillCoke.IsEnabled = enabled;
+            menuEditFillBread.IsEnabled = enabled;
+            menuEditRemoveAllItems.IsEnabled = enabled;
         }
 
         private void UpdateTitle() {
             Title = (mapChanged ? "* " : "") + (mapFileName != null ? mapFileName : "new map") + " - " + title;
+        }
+
+        private void menuEditFillCoke_Click(object sender, RoutedEventArgs e) {
+            var children = mapGrid.Children;
+            var size = mapObject.GetWidth() * mapObject.GetHeight();
+            for (var i = 0; i < size; i++) {
+                if (mapObject.Get(i) == 1) { // is a movable
+                    mapObject.Set(i, 2); // replace with coke
+                    ((Image)children[i]).Source = imageCoke.Source;
+                }
+            }
+        }
+
+        private void menuEditFillBread_Click(object sender, RoutedEventArgs e) {
+            var children = mapGrid.Children;
+            var size = mapObject.GetWidth() * mapObject.GetHeight();
+            for (var i = 0; i < size; i++) {
+                if (mapObject.Get(i) == 1) { // is a movable
+                    mapObject.Set(i, 3); // replace with bread
+                    ((Image)children[i]).Source = imageBread.Source;
+                }
+            }
+        }
+
+        private void menuEditRemoveAllItems_Click(object sender, RoutedEventArgs e) {
+            var children = mapGrid.Children;
+            var size = mapObject.GetWidth() * mapObject.GetHeight();
+            for (var i = 0; i < size; i++) {
+                if (mapObject.Get(i) == 2 || mapObject.Get(i) == 3) { // is a coke or a bread
+                    mapObject.Set(i, 1); // replace with movable
+                    ((Image)children[i]).Source = imageMovable.Source;
+                }
+            }
         }
 
     }

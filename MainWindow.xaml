@@ -19,6 +19,11 @@
                 <Separator/>
                 <MenuItem Header="E_xit" Click="menuFileExit_Click"/>
             </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Fill Coke" x:Name="menuEditFillCoke" Click="menuEditFillCoke_Click"/>
+                <MenuItem Header="F_ill Bread" x:Name="menuEditFillBread" Click="menuEditFillBread_Click"/>
+                <MenuItem Header="_Remove All Items" x:Name="menuEditRemoveAllItems" Click="menuEditRemoveAllItems_Click"/>
+            </MenuItem>
         </Menu>
 
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
