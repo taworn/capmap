@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -70,23 +71,35 @@ namespace capmap {
 
                 // opens old map
                 mapObject = new Map(1, 1);
-                mapObject.Open(dialog.FileName);
-                mapChanged = false;
-                mapFileName = dialog.FileName;
-                var children = mapGrid.Children;
-                children.Clear();
-                var size = mapObject.GetWidth() * mapObject.GetHeight();
-                for (var i = 0; i < size; i++) {
-                    var image = new Image();
-                    image.Source = MapDataToImage(mapObject.Get(i)).Source;
-                    image.Margin = new Thickness(1, 1, 1, 1);
-                    image.MouseDown += Image_MouseDown;
-                    image.Tag = i;
-                    children.Add(image);
-                }
+                try {
+                    mapObject.Open(dialog.FileName);
+                    mapChanged = false;
+                    mapFileName = dialog.FileName;
+                    var children = mapGrid.Children;
+                    children.Clear();
+                    var size = mapObject.GetWidth() * mapObject.GetHeight();
+                    for (var i = 0; i < size; i++) {
+                        var image = new Image();
+                        image.Source = MapDataToImage(mapObject.Get(i)).Source;
+                        image.Margin = new Thickness(1, 1, 1, 1);
+                        image.MouseDown += Image_MouseDown;
+                        image.Tag = i;
+                        children.Add(image);
+                    }
 
-                UpdateTitle();
-                EnableMenu(true);
+                    UpdateTitle();
+                    EnableMenu(true);
+                }
+                catch (IOException ex) {
+                    MessageBox.Show(this, ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Stop);
+                    mapObject = null;
+                    mapChanged = false;
+                    mapFileName = null;
+                    var children = mapGrid.Children;
+                    children.Clear();
+                    Title = title;
+                    EnableMenu(false);
+                }
             }
         }
 
