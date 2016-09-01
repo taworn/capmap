@@ -30,7 +30,7 @@
             </MenuItem>
         </Menu>
 
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+        <DockPanel DockPanel.Dock="Bottom">
             <RadioButton Style="{StaticResource RadioButton}" ToolTip="Block" x:Name="radioBlock" Tag="0" Click="RadioButton_Click">
                 <Image Margin="4,4,4,4" Source="./res/block.png" Tag="0" x:Name="imageBlock"/>
             </RadioButton>
@@ -49,11 +49,14 @@
             <RadioButton Style="{StaticResource RadioButton}" ToolTip="Pacman Start Point" Tag="5" Click="RadioButton_Click">
                 <Image Margin="4,4,4,4" Source="./res/pacman.png" Tag="5" x:Name="imagePacman"/>
             </RadioButton>
-        </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <TextBlock FontSize="24" x:Name="textSize">888 x 888</TextBlock>
+            </StackPanel>
+        </DockPanel>
 
         <Grid>
             <ScrollViewer>
-                <UniformGrid Rows="16" Columns="16" Height="768" Width="768" x:Name="mapGrid"/>
+                <UniformGrid x:Name="mapGrid"/>
             </ScrollViewer>
         </Grid>
     </DockPanel>

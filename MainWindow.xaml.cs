@@ -37,24 +37,33 @@ namespace capmap {
             if (!CheckFileSave())
                 return;
 
-            // starts new map
-            mapObject = new Map(16, 16);
-            mapChanged = false;
-            mapFileName = null;
-            var children = mapGrid.Children;
-            children.Clear();
-            var size = mapObject.GetWidth() * mapObject.GetHeight();
-            for (var i = 0; i < size; i++) {
-                var image = new Image();
-                image.Source = imageBlock.Source;
-                image.Margin = new Thickness(1, 1, 1, 1);
-                image.MouseDown += Image_MouseDown;
-                image.Tag = i;
-                children.Add(image);
-            }
+            var dialog = new SetSizeWindow();
+            dialog.Owner = this;
+            if (dialog.ShowDialog() == true) {
+                // starts new map
+                mapObject = new Map(dialog.GetResultWidth(), dialog.GetResultHeight());
+                mapChanged = false;
+                mapFileName = null;
+                mapGrid.Columns = mapObject.GetWidth();
+                mapGrid.Rows = mapObject.GetHeight();
+                mapGrid.Width = mapGrid.Columns * 48;
+                mapGrid.Height = mapGrid.Rows * 48;
+                var children = mapGrid.Children;
+                children.Clear();
+                var size = mapObject.GetWidth() * mapObject.GetHeight();
+                for (var i = 0; i < size; i++) {
+                    var image = new Image();
+                    image.Source = imageBlock.Source;
+                    image.Margin = new Thickness(1, 1, 1, 1);
+                    image.MouseDown += Image_MouseDown;
+                    image.Tag = i;
+                    children.Add(image);
+                }
 
-            UpdateTitle();
-            EnableMenu(true);
+                textSize.Text = mapObject.GetWidth() + " x " + mapObject.GetHeight();
+                UpdateTitle();
+                EnableMenu(true);
+            }
         }
 
         private void menuFileOpen_Click(object sender, RoutedEventArgs e) {
@@ -75,6 +84,10 @@ namespace capmap {
                     mapObject.Open(dialog.FileName);
                     mapChanged = false;
                     mapFileName = dialog.FileName;
+                    mapGrid.Columns = mapObject.GetWidth();
+                    mapGrid.Rows = mapObject.GetHeight();
+                    mapGrid.Width = mapGrid.Columns * 48;
+                    mapGrid.Height = mapGrid.Rows * 48;
                     var children = mapGrid.Children;
                     children.Clear();
                     var size = mapObject.GetWidth() * mapObject.GetHeight();
@@ -87,6 +100,7 @@ namespace capmap {
                         children.Add(image);
                     }
 
+                    textSize.Text = mapObject.GetWidth() + " x " + mapObject.GetHeight();
                     UpdateTitle();
                     EnableMenu(true);
                 }
@@ -97,6 +111,7 @@ namespace capmap {
                     mapFileName = null;
                     var children = mapGrid.Children;
                     children.Clear();
+                    textSize.Text = "";
                     Title = title;
                     EnableMenu(false);
                 }
@@ -151,6 +166,7 @@ namespace capmap {
             var children = mapGrid.Children;
             children.Clear();
 
+            textSize.Text = "";
             Title = title;
             EnableMenu(false);
         }

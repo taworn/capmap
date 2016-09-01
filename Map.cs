@@ -5,10 +5,10 @@ namespace capmap {
 
         private int width;
         private int height;
-        private int divoStartX;
-        private int divoStartY;
-        private int pacmanStartX;
-        private int pacmanStartY;
+        private int startDivoX;
+        private int startDivoY;
+        private int startPacmanX;
+        private int startPacmanY;
         private byte[] mapData;
         private int[] imageData;
         private int[] blockData;
@@ -19,10 +19,10 @@ namespace capmap {
         public Map(int w, int h) {
             width = w;
             height = h;
-            divoStartX = -1;
-            divoStartY = -1;
-            pacmanStartX = -1;
-            pacmanStartY = -1;
+            startDivoX = -1;
+            startDivoY = -1;
+            startPacmanX = -1;
+            startPacmanY = -1;
             mapData = new byte[width * height];
             imageData = new int[width * height];
             blockData = new int[width * height];
@@ -51,8 +51,6 @@ namespace capmap {
                 // 6 int = width, height, divo start width, divo start height, pacman start width, pacman start height
                 int w = reader.ReadInt32();
                 int h = reader.ReadInt32();
-                if (w != 16 && h != 16)
-                    throw new IOException("Width and Height must be 16x16 for now.");
                 int dx = reader.ReadInt32();
                 int dy = reader.ReadInt32();
                 int px = reader.ReadInt32();
@@ -75,10 +73,10 @@ namespace capmap {
                 // copying data
                 this.width = w;
                 this.height = h;
-                this.divoStartX = dx;
-                this.divoStartY = dy;
-                this.pacmanStartX = px;
-                this.pacmanStartY = py;
+                this.startDivoX = dx;
+                this.startDivoY = dy;
+                this.startPacmanX = px;
+                this.startPacmanY = py;
                 this.mapData = mapData;
                 this.imageData = imageData;
                 this.blockData = blockData;
@@ -106,10 +104,10 @@ namespace capmap {
                 // 6 int = width, height, divo start width, divo start height, pacman start width, pacman start height
                 writer.Write(width);
                 writer.Write(height);
-                writer.Write(divoStartX);
-                writer.Write(divoStartY);
-                writer.Write(pacmanStartX);
-                writer.Write(pacmanStartY);
+                writer.Write(startDivoX);
+                writer.Write(startDivoY);
+                writer.Write(startPacmanX);
+                writer.Write(startPacmanY);
                 int size = width * height;
 
                 // writes map data and image data for game
@@ -141,10 +139,10 @@ namespace capmap {
 
                 writer.WriteLine("        width: " + width + ",");
                 writer.WriteLine("        height: " + height + ",");
-                writer.WriteLine("        startDivoX: " + divoStartX + ",");
-                writer.WriteLine("        startDivoY: " + divoStartY + ",");
-                writer.WriteLine("        startPacmanX: " + pacmanStartX + ",");
-                writer.WriteLine("        startPacmanY: " + pacmanStartY + ",");
+                writer.WriteLine("        startDivoX: " + startDivoX + ",");
+                writer.WriteLine("        startDivoY: " + startDivoY + ",");
+                writer.WriteLine("        startPacmanX: " + startPacmanX + ",");
+                writer.WriteLine("        startPacmanY: " + startPacmanY + ",");
 
                 writer.WriteLine("        mapData: [");
                 for (int j = 0; j < height; j++) {
@@ -186,29 +184,29 @@ namespace capmap {
         }
 
         public int GetDivoStartX() {
-            return divoStartX;
+            return startDivoX;
         }
 
         public int GetDivoStartY() {
-            return divoStartY;
+            return startDivoY;
         }
 
         public void SetDivoStart(int x, int y) {
-            divoStartX = x;
-            divoStartY = y;
+            startDivoX = x;
+            startDivoY = y;
         }
 
         public int GetPacmanStartX() {
-            return pacmanStartX;
+            return startPacmanX;
         }
 
         public int GetPacmanStartY() {
-            return pacmanStartY;
+            return startPacmanY;
         }
 
         public void SetPacmanStart(int x, int y) {
-            pacmanStartX = x;
-            pacmanStartY = y;
+            startPacmanX = x;
+            startPacmanY = y;
         }
 
         public int Get(int index) {
