@@ -128,6 +128,55 @@ namespace capmap {
             }
         }
 
+        public void ExportJavaScript(string fileName) {
+            var stream = new FileStream(fileName, FileMode.Create);
+            var writer = new StreamWriter(stream);
+            try {
+                var name = Path.GetFileNameWithoutExtension(fileName);
+                name = name.Replace('.', '_');
+                name += "MapResource";
+                writer.WriteLine("// This file is generated.");
+                writer.WriteLine("function " + name + "() {");
+                writer.WriteLine("    return {");
+
+                writer.WriteLine("        width: " + width + ",");
+                writer.WriteLine("        height: " + height + ",");
+                writer.WriteLine("        startDivoX: " + divoStartX + ",");
+                writer.WriteLine("        startDivoY: " + divoStartY + ",");
+                writer.WriteLine("        startPacmanX: " + pacmanStartX + ",");
+                writer.WriteLine("        startPacmanY: " + pacmanStartY + ",");
+
+                writer.WriteLine("        mapData: [");
+                for (int j = 0; j < height; j++) {
+                    var line = "            ";
+                    for (int i = 0; i < width; i++) {
+                        var s = mapData[j * width + i].ToString("X2");
+                        line += "0x" + s + ", ";
+                    }
+                    writer.WriteLine(line);
+                }
+                writer.WriteLine("        ],");
+
+                writer.WriteLine("        imageData: [");
+                for (int j = 0; j < height; j++) {
+                    var line = "            ";
+                    for (int i = 0; i < width; i++) {
+                        var s = imageData[j * width + i].ToString("X2");
+                        line += "0x" + s + ", ";
+                    }
+                    writer.WriteLine(line);
+                }
+                writer.WriteLine("        ],");
+
+                writer.WriteLine("    };");
+                writer.WriteLine("}");
+            }
+            finally {
+                writer.Close();
+                stream.Close();
+            }
+        }
+
         public int GetWidth() {
             return width;
         }

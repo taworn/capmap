@@ -130,7 +130,15 @@ namespace capmap {
         }
 
         private void menuFileExportToJavaScript_Click(object sender, RoutedEventArgs e) {
-            //
+            var dialog = new SaveFileDialog();
+            dialog.CheckPathExists = true;
+            dialog.DefaultExt = ".js";
+            dialog.FileName = mapFileName != null ? Path.GetFileNameWithoutExtension(mapFileName) + ".js" : "untitle.js";
+            dialog.Filter = "JavaScript Files (*.js)|*.js";
+            var result = dialog.ShowDialog();
+            if (result == true) {
+                mapObject.ExportJavaScript(dialog.FileName);
+            }
         }
 
         private void menuFileClose_Click(object sender, RoutedEventArgs e) {
